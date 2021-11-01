@@ -24,7 +24,14 @@ images.forEach(function (imagePath) {
 });
 
 let gameStart = false,
-    firstItem = null;
+    firstItem = null,
+    winsCounter = localStorage.getItem('results_count') || 0;
+
+if (winsCounter > 0) {
+    let result = document.querySelector('.results');
+    result.innerHTML = winsCounter;
+}
+
 
 items.forEach(function (item) {
     item.addEventListener('click', function () {
@@ -65,7 +72,13 @@ items.forEach(function (item) {
 
                 console.log(itemsWhichShowCount);
 
+
                 if (itemsWhichShowCount === 16) {
+                    let result = document.querySelector('.results');
+                    winsCounter++;
+                    result.innerHTML = winsCounter;
+                    localStorage['results_count'] = winsCounter;
+
                     setTimeout(function () {
                         alert('Вы выиграли за ' + getTimerTime());
                         reset();
@@ -144,8 +157,10 @@ function shuffle(arr) {
  * 3) Сохранять топ время прохождения игры
  */
 
+// 1. Game wins
 
 
+// 2. Timer
 const timer = document.querySelector('.timer');
 
 
