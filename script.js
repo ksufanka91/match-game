@@ -27,9 +27,37 @@ let gameStart = false,
     firstItem = null,
     winsCounter = localStorage.getItem('results_count') || 0;
 
+
 if (winsCounter > 0) {
     let result = document.querySelector('.results');
     result.innerHTML = winsCounter;
+}
+
+function formatSeconds(seconds) {
+    let hours = Math.floor(seconds / 3600);
+    seconds %= 3600;
+    let minutes = Math.floor(seconds / 60);
+    seconds = seconds % 60;
+
+    if (hours <= 9) {
+        hours = '0' + hours;
+    }
+
+    if (minutes <= 9) {
+        minutes = '0' + minutes;
+    }
+
+    if (seconds <= 9) {
+        seconds = '0' + seconds;
+    }
+    
+    return hours + ':' + minutes + ':' + seconds;
+}
+
+if (localStorage.getItem('best_time') > 0) {
+    let bestTimeResult = document.querySelector('.best-time-result');
+
+    bestTimeResult.innerHTML = formatSeconds(localStorage.getItem('best_time'));
 }
 
 
@@ -77,7 +105,21 @@ items.forEach(function (item) {
                     let result = document.querySelector('.results');
                     winsCounter++;
                     result.innerHTML = winsCounter;
-                    localStorage['results_count'] = winsCounter;
+                    localStorage.setItem('results_count', winsCounter);
+
+                    let gameTime = second + minute * 60 + hour * 60 * 60;
+
+                    let bestTimeResult = document.querySelector('.best-time-result');
+
+                    if (localStorage.getItem('best_time') != null) {
+                        if (gameTime < localStorage.getItem('best_time')) {
+                            localStorage.setItem('best_time', gameTime);
+                            bestTimeResult.innerHTML = formatSeconds(gameTime);
+                        }
+                    } else {
+                        localStorage.setItem('best_time', gameTime);
+                        bestTimeResult.innerHTML = formatSeconds(gameTime);
+                    }
 
                     setTimeout(function () {
                         alert('Вы выиграли за ' + getTimerTime());
@@ -151,9 +193,7 @@ function shuffle(arr) {
 
 /**
  * Доработки
- *
- * 1) Сделать счетчик побед
- * 2) Сделать таймер, в aлерте показывать за сколько прошли игру
+ * Доработки
  * 3) Сохранять топ время прохождения игры
  */
 
@@ -199,6 +239,7 @@ function startTimerInterval() {
 
     timer.textContent = getTimerTime();
 }
+
 
 function getTimerTime() {
     let hourFormat = '',
@@ -256,3 +297,11 @@ function getTimerTime() {
 
     return hourFormat + ':' + minuteFormat + ':' + secondFormat;
 }
+
+
+let b = [3, 2, 6, 2, -7, -23];
+let c = [-48, -38, -93, -38];
+
+console.log(Math.min.apply(null, [1, 2, -3]));
+console.log(Math.min(1, 2, 3, 4, 5));
+console.log(Math.min(...b));

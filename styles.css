@@ -59,6 +59,7 @@ button {
     justify-content: space-between; }
 
 .results__block {
-  color: white; }
+  color: white;
+  margin-bottom: 30px; }
 
 /*# sourceMappingURL=styles.css.map */
